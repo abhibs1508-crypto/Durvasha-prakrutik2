@@ -1,0 +1,248 @@
+/* =========================================================
+   THEME VARIABLES (same as Blog + Gallery + About)
+========================================================= */
+:root{
+  --font-family:'Poppins',sans-serif;
+  --text:#1b3a1a;
+  --accent:#1b5e20;
+  --accent-2:#4caf50;
+  --gold:#c6a700;
+  --bg-start:#ffffff;
+  --bg-mid:#f8fff3;
+  --bg-accent:#fffbe6;
+  --glass:rgba(255,255,255,0.55);
+  --card-bg:rgba(255,255,255,0.85);
+  --shadow:0 18px 40px rgba(27,94,32,0.12);
+  --hover-shadow:0 30px 60px rgba(27,94,32,0.22);
+  --border-glow:linear-gradient(130deg,#1b5e20,#4caf50,#c6a700);
+}
+
+/* ROOT */
+.blog-detail-root{
+  background:linear-gradient(180deg,var(--bg-start),var(--bg-mid),var(--bg-accent));
+  font-family:var(--font-family);
+  padding-bottom:60px;
+  overflow-x:hidden;
+}
+
+/* =========================================================
+   HERO SECTION
+========================================================= */
+.detail-hero{
+  height:340px;
+  background-size:cover;
+  background-position:center;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  padding-bottom:40px;
+  animation:fadeHero 1s ease-out forwards;
+  opacity:0;
+  position:relative;
+}
+
+@keyframes fadeHero{
+  from{opacity:0; transform:scale(1.05);}
+  to{opacity:1; transform:none;}
+}
+
+/* Soft top gradient overlay */
+.detail-hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,0.05),rgba(0,0,0,0.45));
+}
+
+.detail-hero-inner{
+  position:relative;
+  text-align:center;
+  color:white;
+  z-index:2;
+}
+
+.detail-title{
+  font-size:42px;
+  font-weight:800;
+  margin:0;
+  background:linear-gradient(90deg,#ffffff,#eaffea,#fffec9);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 4px 14px rgba(0,0,0,0.35));
+}
+
+.detail-meta{
+  margin-top:6px;
+  color:#e6ffe6;
+}
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+.detail-main{
+  max-width:1200px;
+  margin:40px auto;
+  padding:0 20px;
+  display:grid;
+  grid-template-columns: 2fr 0.9fr;
+  gap:30px;
+}
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+.detail-card{
+  background:var(--card-bg);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+  padding:20px 24px 28px;
+  backdrop-filter:blur(10px);
+  animation:fadeUp .7s ease forwards;
+  opacity:0;
+  position:relative;
+}
+
+/* Animated border */
+.detail-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  padding:2px;
+  background:var(--border-glow);
+  background-size:300% 300%;
+  animation:borderMove 6s linear infinite;
+  mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  mask-composite:exclude;
+  pointer-events:none;
+}
+
+@keyframes borderMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* Fade-up animation */
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(22px);}
+  to{opacity:1; transform:none;}
+}
+
+/* Content image */
+.detail-img{
+  width:100%;
+  border-radius:16px;
+  margin-bottom:16px;
+  box-shadow:0 10px 28px rgba(0,0,0,0.14);
+  transition:transform .7s cubic-bezier(.2,.85,.25,1), filter .4s;
+}
+
+.detail-img:hover{
+  transform:scale(1.03);
+  filter:brightness(1.05);
+}
+
+/* HTML text content */
+.detail-content{
+  color:var(--text);
+  line-height:1.75;
+  font-size:16px;
+  margin-top:14px;
+}
+
+.detail-content h2,
+.detail-content h3{
+  color:var(--accent);
+  margin-top:18px;
+}
+
+/* =========================================================
+   SIDE CARDS
+========================================================= */
+.detail-side{
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+}
+
+.detail-side .card{
+  background:var(--glass);
+  border-radius:18px;
+  padding:20px 18px;
+  backdrop-filter:blur(12px);
+  box-shadow:var(--shadow);
+  animation:fadeSide .8s ease forwards;
+  opacity:0;
+}
+
+@keyframes fadeSide{
+  from{opacity:0; transform:translateX(20px);}
+  to{opacity:1; transform:none;}
+}
+
+.detail-side .card h4{
+  margin:0 0 10px;
+  font-size:20px;
+  color:var(--accent);
+  font-weight:700;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+.btn{
+  padding:10px 22px;
+  border-radius:999px;
+  font-weight:700;
+  cursor:pointer;
+  border:none;
+  transition:.3s;
+}
+
+.btn.primary{
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:white;
+  box-shadow:0 8px 22px rgba(76,175,80,0.25);
+}
+
+.btn.primary:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 30px rgba(76,175,80,0.32);
+}
+
+.btn.ghost{
+  background:transparent;
+  border:1px solid rgba(198,167,0,0.22);
+  color:var(--gold);
+}
+
+.btn.ghost:hover{
+  background:linear-gradient(90deg,#4caf50,#c6a700);
+  color:white;
+  border:none;
+  transform:translateY(-3px);
+}
+
+/* =========================================================
+   LOADING / NOT FOUND
+========================================================= */
+.loading, .notfound{
+  text-align:center;
+  padding:80px;
+  color:var(--text);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media(max-width:880px){
+  .detail-main{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:520px){
+  .detail-title{ font-size:30px; }
+  .detail-img{ border-radius:14px; }
+}

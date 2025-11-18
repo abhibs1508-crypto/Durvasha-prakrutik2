@@ -1,0 +1,420 @@
+:root{
+  --green-700: #1b5e20;
+  --green-500: #4caf50;
+  --gold: #c6a700;
+  --soft-bg: #f4f9f4;
+  --card-bg: rgba(255,255,255,0.14);    /* glass */
+  --card-bg-2: rgba(255,255,255,0.06);  /* darker glass on hover */
+  --glass-border: rgba(255,255,255,0.12);
+  --glass-accent: rgba(198,167,0,0.08);
+  --text-strong: #123218;
+  --shadow-deep: rgba(10,20,10,0.45);
+}
+
+/* ============ PAGE ROOT & PARTICLE BACKGROUND ============ */
+.gw-root{
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  padding-bottom: 4rem;
+  background: linear-gradient(180deg, var(--soft-bg), #e8f5e9);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Particle field (CSS-only: subtle floating dots/leaves) */
+.gw-root::before{
+  content:"";
+  position: absolute;
+  inset: -30% -20%;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(27,94,32,0.06) 0 1px, transparent 2px),
+    radial-gradient(circle at 70% 40%, rgba(198,167,0,0.04) 0 1px, transparent 2px),
+    radial-gradient(circle at 40% 70%, rgba(27,94,32,0.05) 0 1px, transparent 2px),
+    radial-gradient(circle at 85% 85%, rgba(27,94,32,0.04) 0 1px, transparent 2px);
+  background-size: 600px 600px, 800px 800px, 700px 700px, 900px 900px;
+  opacity: 0.9;
+  pointer-events: none; /* important: never block clicks */
+  animation: drift 30s linear infinite;
+  z-index: 0;
+  mix-blend-mode: multiply;
+}
+
+@keyframes drift{
+  0%{ transform: translateY(0) translateX(0) rotate(0deg); }
+  50%{ transform: translateY(-6%) translateX(3%) rotate(6deg); }
+  100%{ transform: translateY(0) translateX(0) rotate(0deg); }
+}
+
+/* subtle leaf sprites (top-right/bottom-left) */
+.gw-root::after{
+  content:"";
+  position:absolute;
+  inset: auto 2% 5% auto;
+  width: 420px;
+  height: 420px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(27,94,32,0.05), transparent 30%),
+    radial-gradient(circle at 80% 80%, rgba(198,167,0,0.03), transparent 30%);
+  filter: blur(28px);
+  opacity: .9;
+  pointer-events: none;
+  z-index: 0;
+  animation: swirl 26s ease-in-out infinite;
+}
+@keyframes swirl{
+  0%{ transform: translateY(0) rotate(0deg) scale(1); }
+  50%{ transform: translateY(-10px) rotate(6deg) scale(1.02); }
+  100%{ transform: translateY(0) rotate(0deg) scale(1); }
+}
+
+/* ============ TITLE ============ */
+.gw-title{
+  font-size: 3rem;
+  text-align: center;
+  padding-top: 3rem;
+  padding-bottom: 1rem;
+  background: linear-gradient(90deg, var(--green-700), var(--green-500), var(--gold));
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: 800;
+  z-index: 2;
+  position: relative;
+  margin-bottom: 8px;
+  /* subtle entrance */
+  transform-origin: center;
+}
+
+/* micro-glow */
+.gw-title::after{
+  content:"";
+  display:block;
+  height:4px;
+  width:40%;
+  margin:10px auto 0;
+  background: linear-gradient(90deg, rgba(27,94,32,0.12), rgba(198,167,0,0.18));
+  border-radius: 8px;
+  z-index: 1;
+  opacity: 0.95;
+}
+
+/* ============ GRID WRAPPER ============ */
+.gw-grid{
+  width: 95%;
+  margin: 2rem auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* wider cards */
+  gap: 2.4rem;
+  perspective: 1600px;
+  position: relative;
+  z-index: 2; /* above particle background */
+}
+
+/* ============ CARD (Glassmorphic + 3D + Apple Shadow) ============ */
+.gw-card{
+  position: relative;
+  overflow: visible;
+  border-radius: 16px;
+  min-height: 380px;
+  transform-style: preserve-3d;
+  transition:
+    transform 420ms cubic-bezier(.2,.9,.22,1),
+    box-shadow 420ms ease,
+    background 320ms ease,
+    border 320ms ease;
+  z-index: 1;
+  cursor: pointer;
+
+  /* glass base */
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  border: 1px solid var(--glass-border, rgba(255,255,255,0.08));
+  backdrop-filter: blur(8px) saturate(1.05);
+  box-shadow:
+    0 10px 30px rgba(10,20,10,0.08),               /* soft global */
+    0 30px 80px rgba(10,20,10,0.06);               /* deep apple-style shadow */
+}
+
+/* floating (gentle up-down) */
+.gw-card {
+  animation: floatCard 6.6s ease-in-out infinite;
+}
+@keyframes floatCard {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-6px) scale(1.002); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* 3D tilt on pointer move is handled in JSX; ensure we have default transform reset */
+.gw-card:active,
+.gw-card:focus { outline: none; }
+
+/* highlight glow ring (appears on hover) */
+.gw-card::before{
+  content:"";
+  position:absolute;
+  inset: -2px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(198,167,0,0.02));
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 320ms ease, transform 420ms ease;
+  opacity: 0;
+  transform: scale(0.98);
+}
+.gw-card:hover::before{
+  opacity: 1;
+  transform: scale(1.01);
+}
+
+/* energetic gold-green glow on hover (inner) */
+.gw-card .glow-inner {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 320ms ease;
+  background: radial-gradient(600px 200px at 10% 10%, rgba(198,167,0,0.08), transparent 12%),
+              radial-gradient(300px 140px at 90% 80%, rgba(76,175,80,0.06), transparent 14%);
+  z-index: 1;
+}
+.gw-card:hover .glow-inner{ opacity: 1; }
+
+/* ============ TOP IMAGE (with cinematic overlay on hover) ============ */
+.gw-card-media{
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+  z-index: 2;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+.gw-card-media img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  transition: transform 1000ms cubic-bezier(.2,.9,.2,1), filter 600ms ease;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* cinematic overlay (title slide + icons) */
+.gw-card-media .overlay{
+  position: absolute;
+  inset: 0;
+  display:flex;
+  align-items:flex-end;
+  justify-content: center;
+  padding: 18px;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.28) 100%);
+  transition: background 420ms ease;
+  z-index: 6;
+  pointer-events: none;
+}
+
+/* caption panel that slides up on hover */
+.gw-card-media .caption{
+  transform: translateY(18px);
+  opacity: 0;
+  transition: transform 420ms cubic-bezier(.2,.9,.22,1), opacity 320ms ease;
+  width: 100%;
+  text-align: center;
+  color: white;
+}
+.gw-card:hover .caption{
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* small icons row */
+.gw-card-media .icon-row{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  margin-top:8px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 360ms ease, transform 360ms ease;
+}
+.gw-card:hover .icon-row{
+  opacity:1;
+  transform: translateY(0);
+}
+
+/* cinematic: scale image on hover */
+.gw-card:hover .gw-card-media img{
+  transform: scale(1.18) rotateZ(-0.6deg);
+  filter: saturate(1.07);
+}
+
+/* ============ BODY (glass) ============ */
+.gw-card-body{
+  position: relative;
+  z-index: 3;
+  padding: 1.3rem;
+  transform: translateZ(40px);
+  text-align: center;
+  color: var(--text-strong);
+}
+
+/* gradient title in body */
+.gw-card-body h3{
+  margin: 6px 0;
+  font-size: 1.28rem;
+  font-weight: 800;
+  background: linear-gradient(90deg,var(--green-700),var(--green-500),var(--gold));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* description */
+.gw-card-body p{
+  color: rgba(20,50,20,0.85);
+  font-size: 0.97rem;
+  line-height: 1.45;
+  margin-top: 8px;
+}
+
+/* ============ ACTIONS (buttons) ============ */
+.gw-actions{
+  display:flex;
+  gap: 0.8rem;
+  justify-content: center;
+  margin-top: 12px;
+  z-index: 60;
+  position: relative;
+}
+
+.btn-cta, .btn-ghost{
+  padding: .55rem .95rem;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 220ms ease;
+  border: none;
+  position: relative;
+  z-index: 70; /* above glow-inner */
+}
+
+/* CTA */
+.btn-cta{
+  background: linear-gradient(90deg, var(--green-500), var(--gold));
+  color: #052b15;
+  box-shadow: 0 10px 30px rgba(76,175,80,0.16);
+}
+.btn-cta:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(76,175,80,0.28);
+}
+
+/* ghost */
+.btn-ghost{
+  background: rgba(255,255,255,0.06);
+  color: var(--green-700);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.btn-ghost:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 14px 36px rgba(27,94,32,0.08);
+}
+
+/* ============ CINEMATIC OVERLAY ICON STYLE ============ */
+.gw-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:36px;
+  height:36px;
+  border-radius:8px;
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
+
+/* ============ MODAL & LIGHTBOX (fixed & safe) ============ */
+.gw-modal{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,20,0,0.72);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index: 99999;
+  pointer-events: auto;
+  padding: 28px 24px;
+}
+
+.gw-modal-inner{
+  width: 100%;
+  max-width: 1240px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,250,246,0.96));
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 40px 120px rgba(0,0,0,0.55);
+  overflow: auto;
+  max-height: 86vh;
+}
+
+/* modal thumbs */
+.gw-modal-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap: 12px;
+}
+.gw-modal-item{
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(10,20,10,0.08);
+}
+.gw-modal-item img{ width:100%; height:150px; object-fit:cover; transition: transform .36s ease; }
+.gw-modal-item:hover img{ transform: scale(1.06); }
+
+/* lightbox image */
+.gw-lightbox{
+  position: fixed;
+  inset: 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(0,0,0,0.92);
+  z-index: 100000;
+}
+.gw-lightbox-img{
+  max-width: 92%;
+  max-height: 92%;
+  border-radius: 12px;
+  box-shadow: 0 40px 120px rgba(0,0,0,0.6);
+}
+
+/* ============ STAGGER REVEAL (cards) ============ */
+.gw-reveal{ opacity: 0; transform: translateY(24px) scale(.995); transition: all 760ms cubic-bezier(.2,.9,.2,1); pointer-events: none; }
+.gw-reveal.in-view{ opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+
+/* add small stagger using nth-child */
+.gw-grid .gw-card:nth-child(4n+1){ transition-delay: 0ms; }
+.gw-grid .gw-card:nth-child(4n+2){ transition-delay: 80ms; }
+.gw-grid .gw-card:nth-child(4n+3){ transition-delay: 160ms; }
+.gw-grid .gw-card:nth-child(4n+4){ transition-delay: 240ms; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 1024px){
+  .gw-grid{ grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 1.8rem; }
+  .gw-card-media{ height: 200px; }
+  .gw-card{ min-height: 340px; }
+}
+
+@media (max-width: 720px){
+  .gw-grid{ grid-template-columns: 1fr; gap: 1.2rem; width: 92%; margin: 1.6rem auto; }
+  .gw-card-media{ height: 180px; }
+  .gw-card{ min-height: 300px; transform: none !important; animation: none; }
+  .gw-card-body{ padding: 1rem; }
+  .gw-title{ font-size: 2.2rem; padding-top: 1.8rem; }
+}
+
+/* ============ PERFORMANCE: reduce heavy effects on low-power devices ============ */
+@media (prefers-reduced-motion: reduce){
+  .gw-card, .gw-root::before, .gw-root::after { animation: none !important; transition: none !important; }
+  .gw-card-media img { transition: none !important; transform: none !important; }
+}

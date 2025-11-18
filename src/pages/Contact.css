@@ -1,0 +1,207 @@
+/* 🌿 Root Container */
+.contact-root {
+  background: linear-gradient(145deg, #ffffff, #f6fff2, #fff8e1);
+  min-height: 100vh;
+  padding: 80px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 1.5s ease forwards;
+  overflow: hidden;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 🌾 Header Section */
+.contact-head {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.contact-head h1 {
+  font-size: 2.8rem;
+  background: linear-gradient(90deg, #1b8a3b, #f6b800);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 1px;
+  font-weight: 700;
+  animation: glowText 3s infinite ease-in-out;
+}
+
+@keyframes glowText {
+  0%, 100% { text-shadow: 0 0 6px rgba(246,184,0,0.25); }
+  50% { text-shadow: 0 0 15px rgba(27,138,59,0.35); }
+}
+
+.contact-head .lead {
+  color: #2b3a2b;
+  font-size: 1.1rem;
+  margin-top: 10px;
+  opacity: 0.9;
+}
+
+/* ✨ Layout Grid */
+.contact-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  width: 100%;
+  max-width: 1100px;
+}
+
+/* 🌼 Contact Boxes */
+.contact-box {
+  border-radius: 18px;
+  padding: 35px 40px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.5s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(250,255,245,0.4));
+  z-index: -1;
+}
+
+.contact-box:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(27,138,59,0.2);
+}
+
+/* 🌿 Form Section */
+.form-box {
+  flex: 1 1 520px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,250,240,0.7));
+  border: 1px solid rgba(27,138,59,0.2);
+}
+
+.form-box h3 {
+  color: #1b8a3b;
+  font-size: 1.6rem;
+  margin-bottom: 25px;
+  border-left: 5px solid #f6b800;
+  padding-left: 10px;
+  font-weight: 600;
+}
+
+/* 🪶 Form Fields */
+label {
+  display: block;
+  color: #305f32;
+  font-weight: 500;
+  margin-top: 14px;
+  font-size: 0.95rem;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 6px;
+  border: 2px solid rgba(27,138,59,0.15);
+  border-radius: 10px;
+  outline: none;
+  background: rgba(255,255,255,0.9);
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  color: #234123;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+input:hover,
+textarea:hover {
+  border-color: rgba(246,184,0,0.6);
+  box-shadow: 0 0 10px rgba(246,184,0,0.2);
+}
+
+input:focus,
+textarea:focus {
+  border-color: #1b8a3b;
+  box-shadow: 0 0 15px rgba(27,138,59,0.4);
+  background: #fffef6;
+  transform: scale(1.01);
+}
+
+/* 🌟 Fancy Floating Effect */
+@keyframes floatIn {
+  from { transform: translateY(25px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+input, textarea {
+  animation: floatIn 0.7s ease forwards;
+}
+
+/* ✉️ Button Styling */
+.btn-submit {
+  margin-top: 25px;
+  background: linear-gradient(90deg, #1b8a3b, #f6b800);
+  border: none;
+  color: #fff;
+  padding: 14px 24px;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 10px rgba(27,138,59,0.3);
+  font-weight: 600;
+}
+
+.btn-submit:hover {
+  background: linear-gradient(90deg, #177830, #ffca28);
+  box-shadow: 0 0 25px rgba(246,184,0,0.6);
+  transform: scale(1.05);
+}
+
+/* 🪴 Info Section */
+.info-box {
+  flex: 0.8 1 320px;
+  background: linear-gradient(135deg, rgba(250,255,245,0.85), rgba(255,255,255,0.7));
+  border: 1px solid rgba(246,184,0,0.25);
+  color: #234123;
+}
+
+.info-box h3 {
+  color: #1b8a3b;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  border-left: 5px solid #f6b800;
+  padding-left: 10px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed rgba(0,0,0,0.1);
+  padding: 10px 0;
+  font-size: 0.95rem;
+}
+
+.info-row strong {
+  color: #1b8a3b;
+}
+
+.muted {
+  color: #444;
+  opacity: 0.85;
+}
+
+/* ✨ Reveal Animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s ease;
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
