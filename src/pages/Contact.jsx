@@ -12,7 +12,8 @@ import {
 } from "react-icons/fa";
 import "./contact.css";
 import qrCode from "../assets/TechStrota.jpeg"; // <-- ADD YOUR QR IMAGE
-import 
+import Footer from "../components/Footer";
+
 
 export default function Contact() {
   const { register, handleSubmit, reset } = useForm();
@@ -57,10 +58,10 @@ export default function Contact() {
           {/* SOCIAL ICONS */}
           <h3 className="social-title">Follow Us</h3>
           <div className="social-icons">
-            <a href="#" className="social-icon"><FaFacebook /></a>
-            <a href="#" className="social-icon"><FaInstagram /></a>
-            <a href="#" className="social-icon"><FaLinkedin /></a>
-            <a href="#" className="social-icon"><FaYoutube /></a>
+            <a href="https://www.facebook.com/people/Tech-Strota/61550062532070/" className="social-icon"><FaFacebook /></a>
+            <a href="https://www.instagram.com/techstrota?igsh=MWdmNWp5ODludW4xcw==" className="social-icon"><FaInstagram /></a>
+            <a href="https://linkedin.com/" className="social-icon"><FaLinkedin /></a>
+            <a href="https://youtube.com/" className="social-icon"><FaYoutube /></a>
           </div>
 
           {/* QR SCANNER BOX */}
@@ -130,6 +131,7 @@ export default function Contact() {
       >
         <FaWhatsapp />
       </a>
+      <Footer/>
     </div>
   );
 }
