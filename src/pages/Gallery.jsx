@@ -3,7 +3,7 @@ import "./Gallery.css";
 import Footer from "../components/Footer";
 
 /* ====== STATIC IMPORTS: adjust only if your filenames differ ====== */
-/* cultivation */
+/* cultivation ..*/
 import c1 from "../assets/gallery/cultivation/c1.jpeg";
 import c2 from "../assets/gallery/cultivation/c2.jpeg";
 import c3 from "../assets/gallery/cultivation/c3.jpeg";
