@@ -43,10 +43,12 @@
 
 body{
   background-color: #96d48fce;
+  
 }
 
 *
 {
   margin: 0px;
   padding: 0px;
+  font-family:cursive;
 }

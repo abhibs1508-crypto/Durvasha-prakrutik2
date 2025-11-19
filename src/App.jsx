@@ -13,7 +13,9 @@ import BlogDetail from "./pages/BlogDetail"; // 👈 BLOG DETAIL PAGE
 
 import Navbar from "./components/Navbar";
 // import Footer from "./components/Footer";
-
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Delius&display=swap');
+</style>
 export default function App() {
   return (
     <Router>
