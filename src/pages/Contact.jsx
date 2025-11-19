@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import "./contact.css";
 import qrCode from "../assets/TechStrota.jpeg"; // <-- ADD YOUR QR IMAGE
+import 
 
 export default function Contact() {
   const { register, handleSubmit, reset } = useForm();
