@@ -1,58 +1,105 @@
-import React, { useEffect, useState } from "react";
-import "./Contact.css";
-import Footer from "../components/Footer";
+import React from "react";
+import { useForm } from "react-hook-form";
+import {
+  FaPhoneAlt,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaFacebook,
+  FaInstagram,
+  FaLinkedin,
+  FaYoutube,
+} from "react-icons/fa";
+import "./contact.css";
 
-export default function Contact(){
-  const [form, setForm] = useState({ name:'', email:'', phone:'', subject:'', message:'' });
+export default function Contact() {
+  const { register, handleSubmit, reset } = useForm();
 
-  useEffect(()=>{
-    const els = document.querySelectorAll('.reveal');
-    const obs = new IntersectionObserver((entries)=> entries.forEach(e => e.isIntersecting && e.target.classList.add('in-view')), { threshold: 0.15 });
-    els.forEach(el => obs.observe(el));
-    return ()=> obs.disconnect();
-  },[]);
-
-  const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-  const onSubmit = (e) => { e.preventDefault(); alert('Message sent — thank you!'); setForm({ name:'', email:'', phone:'', subject:'', message:'' }); };
+  const onSubmit = (data) => {
+    console.log(data);
+    alert("Message Sent Successfully!");
+    reset();
+  };
 
   return (
-    <main className="contact-root">
-      <header className="contact-head reveal">
-        <h1>Contact</h1>
-        <p className="lead">Reach out for partnerships, product inquiries, or farmer programs.</p>
-      </header>
+      <div className="contact-container">
 
-      <section className="contact-grid">
-        <form className="contact-box form-box reveal" onSubmit={onSubmit}>
-          <h3>Send a message</h3>
-          <label>Full name</label>
-          <input name="name" value={form.name} onChange={onChange} required />
+        <div className="contact-header">
+          <h2 className="title">Get In Touch</h2>
+          <p className="subtitle">We’d love to hear from you!</p>
+        </div>
+    
+      <main className="contact-main">
+      {/* LEFT SIDE – CONTACT INFO */}
+      <div className="contact-info">
+        <h2>Contact Information</h2>
 
-          <label>Email</label>
-          <input name="email" type="email" value={form.email} onChange={onChange} required />
+        <div className="info-item">
+          <FaPhoneAlt className="info-icon" />
+          <p>+91 81288 40055</p>
+        </div>
 
-          <label>Phone</label>
-          <input name="phone" value={form.phone} onChange={onChange} />
+        <div className="info-item">
+          <FaEnvelope className="info-icon" />
+          <p>info@techstrota.com</p>
+        </div>
 
-          <label>Subject</label>
-          <input name="subject" value={form.subject} onChange={onChange} />
+        <div className="info-item">
+          <FaMapMarkerAlt className="info-icon" />
+          <p>Vadodara, Gujarat, India</p>
+        </div>
 
-          <label>Message</label>
-          <textarea name="message" rows="5" value={form.message} onChange={onChange} required/>
+        <h3 className="social-title">Follow Us</h3>
 
-          <button className="btn-submit" type="submit">Send Message</button>
+        <div className="social-icons">
+          <a href="#" className="social-icon"><FaFacebook /></a>
+          <a href="#" className="social-icon"><FaInstagram /></a>
+          <a href="#" className="social-icon"><FaLinkedin /></a>
+          <a href="#" className="social-icon"><FaYoutube /></a>
+        </div>
+      </div>
+
+      {/* RIGHT SIDE – CONTACT FORM (SMALL SIZE) */}
+        <form onSubmit={handleSubmit(onSubmit)} className="contact-form small-form">
+          <h2>Contact Form</h2>
+          {/* Name */}
+          <div className="form-group">
+            <input type="text" required {...register("name")} />
+            <label>Name</label>
+            <span className="line"></span>
+          </div>
+
+          {/* Email */}
+          <div className="form-group">
+            <input type="email" required {...register("email")} />
+            <label>Email</label>
+            <span className="line"></span>
+          </div>
+
+          {/* Phone */}
+          <div className="form-group">
+            <input
+              type="tel"
+              required
+              {...register("phone")}
+              pattern="[0-9]{10}"
+              maxLength="10"
+            />
+            <label>Phone</label>
+            <span className="line"></span>
+          </div>
+
+          {/* Message */}
+          <div className="form-group textarea-group">
+            <textarea rows="4" required {...register("message")}></textarea>
+            <label>Your Message</label>
+            <span className="line"></span>
+          </div>
+
+          <button type="submit" className="submit-btn">
+            Send Message
+          </button>
         </form>
-
-        <aside className="contact-box info-box reveal delay">
-          <h3>Contact info</h3>
-          <div className="info-row"><strong>Phone</strong><div className="muted">+91 90237 56982</div></div>
-          <div className="info-row"><strong>Email</strong><div className="muted">support@business.com</div></div>
-          <div className="info-row"><strong>Address</strong><div className="muted">Vadodara, Gujarat, India</div></div>
-
-          <div style={{marginTop:12}} className="muted">Prefer phone? Best times: Mon–Sat, 9AM–6PM IST</div>
-        </aside>
-      </section>
-      <Footer />
-    </main>
+        </main>
+      </div>
   );
 }
