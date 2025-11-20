@@ -55,7 +55,6 @@
   font-family: var(--font-family);
   color: var(--text);
   background: linear-gradient(180deg, var(--bg-start), var(--bg-mid), var(--bg-accent));
-  padding-bottom: 80px;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

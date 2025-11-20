@@ -15,7 +15,6 @@
 .gw-root{
   min-height: 100vh;
   font-family: "Poppins", sans-serif;
-  padding-bottom: 4rem;
   background: linear-gradient(180deg, var(--soft-bg), #e8f5e9);
   position: relative;
   overflow: hidden;

@@ -24,7 +24,6 @@ body {
 --------------------------------------------------- */
 .contact-container {
   width: 100%;
-  padding: 60px 0;
   background: var(--theme-bg);
   animation: fadeReveal 1.2s ease;
 }
