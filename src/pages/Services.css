@@ -1,3 +1,4 @@
+/* 🌿 Root */
 .services-root {
   background: linear-gradient(180deg, #f4f9f4, #e8f5e9);
   font-family: "Poppins", sans-serif;
@@ -6,7 +7,7 @@
   overflow-x: hidden;
 }
 
-/* Header */
+/* 🌿 Header */
 .services-header {
   text-align: center;
   padding: 3rem 1rem;
@@ -14,6 +15,7 @@
   border-radius: 1rem;
   margin: 2rem auto;
   width: 90%;
+  max-width: 900px;
   box-shadow: 0 4px 15px rgba(27, 94, 32, 0.1);
 }
 
@@ -28,17 +30,19 @@
 .services-header p {
   color: #33691e;
   font-size: 1.1rem;
+  max-width: 650px;
+  margin: auto;
 }
 
-/* Grid */
+/* 🌿 Grid */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
   padding: 2rem 3rem;
 }
 
-/* Card */
+/* 🌿 Cards */
 .service-card {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 1.5rem;
@@ -46,6 +50,7 @@
   transition: all 0.4s ease;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .service-card:hover {
@@ -53,21 +58,19 @@
   box-shadow: 0 15px 35px rgba(76, 175, 80, 0.3);
 }
 
-/* Image */
+/* 🌿 Image */
 .service-img img {
   width: 100%;
   height: 230px;
   object-fit: cover;
   transition: transform 1s ease;
-  border-top-left-radius: 1.5rem;
-  border-top-right-radius: 1.5rem;
 }
 
 .service-card:hover .service-img img {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
-/* Content */
+/* 🌿 Content */
 .service-content {
   padding: 1.5rem;
   display: flex;
@@ -77,7 +80,7 @@
 .service-content h3 {
   color: #2e7d32;
   font-size: 1.4rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
 }
 
 .service-content p {
@@ -86,19 +89,20 @@
   font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 1.2rem;
+  overflow-wrap: break-word;
 }
 
-/* Learn More Button */
+/* 🌿 Learn More Button */
 .read-more {
   align-self: flex-start;
   text-decoration: none;
-  padding: 0.6rem 1.2rem;
+  padding: 0.7rem 1.4rem;
   border-radius: 1.5rem;
   font-weight: 600;
   color: white;
   background: linear-gradient(90deg, #4caf50, #c6a700);
   transition: 0.3s ease;
-  border: none;
+  font-size: 1rem;
 }
 
 .read-more:hover {
@@ -106,61 +110,99 @@
   transform: translateY(-3px);
 }
 
-/* Animations */
+/* 🌿 Animations */
 .reveal {
   opacity: 0;
   transform: translateY(30px);
   transition: all 1s ease;
 }
+
 .reveal.in-view {
   opacity: 1;
   transform: translateY(0);
 }
 
 /* 🌿 Responsive Design */
+
+/* Large Tablets */
 @media (max-width: 1024px) {
   .services-header h1 {
     font-size: 2.4rem;
   }
-  .services-header p {
-    font-size: 1rem;
-  }
+
   .services-grid {
     padding: 2rem;
   }
 }
 
+/* Tablets */
 @media (max-width: 768px) {
   .services-header {
     width: 95%;
-    padding: 2.5rem 1rem;
+    padding: 2.5rem 1.2rem;
   }
+
   .services-header h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
+
+  .services-header p {
+    font-size: 1rem;
+  }
+
+  .service-img img {
+    height: 210px;
+  }
+
   .service-content h3 {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
   }
+
   .service-content p {
     font-size: 0.95rem;
   }
-  .service-img img {
-    height: 200px;
+
+  .read-more {
+    padding: 0.6rem 1.1rem;
   }
 }
 
+/* Mobile */
 @media (max-width: 480px) {
+  .services-root {
+    padding-bottom: 2rem;
+  }
+
   .services-header h1 {
     font-size: 1.8rem;
   }
+
   .services-header p {
     font-size: 0.9rem;
   }
+
+  .services-grid {
+    padding: 1.5rem 1rem;
+    gap: 1.5rem;
+  }
+
+  .service-img img {
+    height: 170px;
+  }
+
   .read-more {
-    padding: 0.5rem 1rem;
+    padding: 0.55rem 1rem;
     font-size: 0.9rem;
   }
+}
+
+/* Extra Small Devices */
+@media (max-width: 360px) {
+  .service-content h3 {
+    font-size: 1.15rem;
+  }
+
   .service-img img {
-    height: 180px;
+    height: 150px;
   }
 }
