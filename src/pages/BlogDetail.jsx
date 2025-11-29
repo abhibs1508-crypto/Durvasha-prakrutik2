@@ -11,7 +11,7 @@ export default function BlogDetail() {
   useEffect(() => {
     let mounted = true;
     setLoading(true);
-    fetch("http://127.0.0.1:8001/api/blogs")
+    fetch("http://127.0.0.1:8000/api/blogs")
       .then((r) => r.json())
       .then((data) => {
         if (!mounted) return;
