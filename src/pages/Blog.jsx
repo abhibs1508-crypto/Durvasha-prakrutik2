@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import "./Blog.css";
 import Footer from "../components/Footer";
 
-
 const PAGE_SIZE = 6;
 
 export default function Blog() {
@@ -22,11 +21,11 @@ export default function Blog() {
     localStorage.setItem("blogDarkMode", dark);
   }, [dark]);
 
-  // Fetch Blogs
+  // Fetch Blogs from your API
   useEffect(() => {
     let mounted = true;
     setLoading(true);
-    fetch("https://happy.techstrota.com/api/blogs")
+    fetch("http://127.0.0.1:8000/api/blogs")
       .then((r) => r.json())
       .then((data) => {
         if (!mounted) return;
@@ -45,7 +44,9 @@ export default function Blog() {
     const q = query.trim().toLowerCase();
     if (!q) return blogs;
     return blogs.filter((b) =>
-      `${b.title} ${b.paragraph || ""} ${stripHtml(b.content || "")}`
+      `${b.title} ${b.short_description || ""} ${stripHtml(
+        b.long_description || b.content || ""
+      )}`
         .toLowerCase()
         .includes(q)
     );
@@ -63,7 +64,6 @@ export default function Blog() {
 
   return (
     <div className={`home-root blog-list-root ${dark ? "dark" : ""}`}>
-      
       {/* 🌗 ADVANCED DARK MODE TOGGLE */}
       <div className="theme-toggle">
         <input
@@ -150,7 +150,7 @@ export default function Blog() {
                   >
                     <div className="thumb-wrap">
                       <img
-                        src={b.image}
+                        src={`http://127.0.0.1:8001/storage/${b.image}`}
                         alt={b.title}
                         className="thumb"
                         onError={(e) => {
@@ -166,8 +166,13 @@ export default function Blog() {
                   <div className="card-body">
                     <h3 className="card-title">{b.title}</h3>
                     <p className="card-desc">
-                      {(b.paragraph || stripHtml(b.content || "")).slice(0, 140)}
-                      {(b.paragraph || b.content || "").length > 140 ? "…" : ""}
+                      {(b.short_description || stripHtml(b.long_description || "")).slice(
+                        0,
+                        140
+                      )}
+                      {(b.short_description || b.long_description || "").length > 140
+                        ? "…"
+                        : ""}
                     </p>
 
                     <div className="card-meta">
@@ -217,10 +222,8 @@ export default function Blog() {
           </>
         )}
       </main>
-              <Footer/>
-
+      <Footer />
     </div>
-    
   );
 }
 
