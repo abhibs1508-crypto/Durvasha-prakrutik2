@@ -10,42 +10,35 @@
   --footer-bg: linear-gradient(135deg, #2e3b29, #2a3424, #1f291d);
 }
 
-/* DARK MODE SUPPORT */
-body.dark .footer {
-  background: linear-gradient(135deg, #2f3d2b, #2a3325, #1e281b);
-}
-
-
-/* ---------------------------
-   FOOTER BASE
----------------------------- */
+/* Base Footer */
 .footer {
   position: relative;
   background: var(--footer-bg);
-  padding: 70px 30px 20px;
+  padding: 50px 30px 20px;
   color: var(--text-light);
   overflow: hidden;
 }
 
-/* Subtle floating glow */
+/* Glow */
 .footer-glow {
   position: absolute;
-  top: -80px;
-  left: -80px;
-  width: 200px;
-  height: 200px;
-  background: rgba(200,166,84,0.13);
-  filter: blur(90px);
+  top: -60px;
+  left: -60px;
+  width: 160px;
+  height: 160px;
+  background: rgba(200, 166, 84, 0.15);
+  filter: blur(70px);
   border-radius: 50%;
-  animation: glowMove 10s infinite linear;
+  animation: glowMove 9s infinite linear;
 }
 
 @keyframes glowMove {
   0% { transform: translate(0,0); }
-  50% { transform: translate(40px,40px); }
+  50% { transform: translate(35px,35px); }
   100% { transform: translate(0,0); }
 }
 
+/* Layout */
 .footer-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px,1fr));
@@ -54,13 +47,11 @@ body.dark .footer {
   z-index: 2;
 }
 
-/* ---------------------------
-   SECTIONS
----------------------------- */
+/* Section Titles */
 .footer-section h3 {
   color: var(--gold);
-  margin-bottom: 15px;
-  font-size: 1.25rem;
+  margin-bottom: 12px;
+  font-size: 1.2rem;
   position: relative;
 }
 
@@ -75,23 +66,18 @@ body.dark .footer {
   left: 0;
 }
 
+/* Text */
 .footer-section p,
 .footer-section li a {
   color: var(--text-light);
   opacity: 0.85;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
-/* ---------------------------
-   LINK STYLES
----------------------------- */
+/* Links */
 .footer-section ul {
   list-style: none;
   padding: 0;
-}
-
-.footer-section li {
-  margin-bottom: 8px;
 }
 
 .footer-section li a {
@@ -104,19 +90,19 @@ body.dark .footer {
   padding-left: 6px;
 }
 
-/* ---------------------------
-   LOGO
----------------------------- */
+/* Logo */
 .footer_logo {
-  width: 130px;
-  margin-bottom: 12px;
+  width: 120px;
+  margin-bottom: 8px;
   filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+  transition: 0.4s ease;
 }
 
+.footer_logo:hover {
+  transform: scale(1.05);
+}
 
-/* ---------------------------
-   SOCIAL ICONS
----------------------------- */
+/* Social Icons */
 .social-icons {
   display: flex;
   gap: 12px;
@@ -143,16 +129,54 @@ body.dark .footer {
   color: var(--text-light);
 }
 
-
 /* ---------------------------
-   FOOTER BOTTOM
+   QR CODE BOX
 ---------------------------- */
+.qr-footer-box {
+  margin-top: 12px;
+  padding: 12px;
+  width: 135px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  transition: 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qr-footer-box:hover {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 0 20px rgba(200,166,84,0.35);
+  border-color: var(--gold);
+}
+
+.qr-mini-logo {
+  width: 45px;
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
+
+.qr-footer-img {
+  width: 110px;
+  border-radius: 10px;
+}
+
+.qr-footer-text {
+  font-size: 0.85rem;
+  margin-top: 6px;
+  opacity: 0.8;
+}
+
+/* Footer Bottom */
 .footer-bottom {
   text-align: center;
-  margin-top: 50px;
-  padding-top: 15px;
+  margin-top: 40px;
+  padding-top: 10px;
   border-top: 1px solid rgba(255,255,255,0.15);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #d8e6cf;
 }
 
@@ -160,14 +184,11 @@ body.dark .footer {
   color: var(--gold);
 }
 
-
-/* ---------------------------
-   ANIMATIONS (Fade-up)
----------------------------- */
+/* Animation */
 .fade-up {
   opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 1s ease forwards;
+  transform: translateY(15px);
+  animation: fadeUp 0.9s ease forwards;
 }
 
 .delay-1 { animation-delay: 0.15s; }
@@ -182,17 +203,17 @@ body.dark .footer {
   }
 }
 
-
-/* ---------------------------
-   RESPONSIVE
----------------------------- */
+/* Responsive */
 @media (max-width: 600px) {
   .footer {
-    padding: 50px 20px 20px;
+    padding: 40px 20px 20px;
   }
 
-  .social-icons a {
-    width: 34px;
-    height: 34px;
+  .qr-footer-box {
+    width: 120px;
+  }
+
+  .qr-footer-img {
+    width: 95px;
   }
 }

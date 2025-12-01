@@ -75,7 +75,7 @@ export default function Contact() {
             <div
               className="qr-box"
               onClick={() =>
-                window.open("https://maps.app.goo.gl/REY574k3NQskJkQ6", "_blank")
+                window.open("https://maps.app.goo.gl/m2Xjm7WUQjKR2MBX8", "_blank")
               }
             >
               <img className="brand-logo glow" src={durvaasaLogo} alt="Brand Logo" />
