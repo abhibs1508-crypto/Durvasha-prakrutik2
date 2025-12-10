@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Services.css";
+import Footer from "../components/Footer";
 
 export default function Services() {
   const [services, setServices] = useState([]);
@@ -13,11 +14,10 @@ export default function Services() {
         setServices(data.data);
         setLoading(false);
 
-        setTimeout(() => {
-          document.querySelectorAll(".reveal").forEach((el) => {
-            el.classList.add("in-view");
-          });
-        }, 150);
+        const elements = document.querySelectorAll(".service-card, .services-header");
+        elements.forEach((el, index) => {
+          setTimeout(() => el.classList.add("in-view"), index * 150);
+        });
       })
       .catch(() => setLoading(false));
   }, []);
@@ -26,35 +26,31 @@ export default function Services() {
     <main className="services-root">
       <header className="services-header reveal">
         <h1>Our Premium Services</h1>
-        <p>Providing modern, sustainable, and technology-driven agriculture solutions for your success.</p>
+        <p>
+          Providing modern, sustainable, and technology-driven agriculture solutions for your success.
+        </p>
       </header>
 
       {loading ? (
-        <p className="loading-text reveal">Loading Services...</p>
+        <p className="reveal">Loading Services...</p>
       ) : (
         <section className="services-grid">
           {services.map((service, index) => (
-            <div
-              className="service-card reveal"
-              key={service.id}
-              style={{ animationDelay: `${index * 0.15}s` }}
-            >
+            <div key={service.id} className="service-card reveal">
               <div className="service-img">
                 <img src={service.image_url} alt={service.title} />
-                <div className="service-overlay">
-                  <h3>{service.title}</h3>
-                  <Link to={`/services/${service.slug}`} className="read-more">
-                    Learn More
-                  </Link>
-                </div>
               </div>
               <div className="service-content">
+                <h3>{service.title}</h3>
                 <p>{service.short_description}</p>
+                <Link to={`/services/${service.slug}`} className="read-more">Learn More</Link>
               </div>
             </div>
           ))}
         </section>
       )}
+
+      <Footer />
     </main>
   );
 }

@@ -64,13 +64,13 @@ const Footer = () => {
         <div className="footer-section fade-up delay-4 social">
           <h3>Follow Us</h3>
           <div className="social-icons">
-            <a href="#" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.facebook.com/people/Tech-Strota/61550062532070/" target="_blank" rel="noopener noreferrer">
               <FaFacebookF />
             </a>
-            <a href="#" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.instagram.com/techstrota/" target="_blank" rel="noopener noreferrer">
               <FaInstagram />
             </a>
-            <a href="#" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.youtube.com/@techstrota" target="_blank" rel="noopener noreferrer">
               <FaLinkedinIn />
             </a>
           </div>

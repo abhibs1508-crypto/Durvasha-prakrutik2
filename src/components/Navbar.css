@@ -1,19 +1,23 @@
-/* Navbar Base */
+/* ===========================
+   NAVBAR BASE
+=========================== */
 .navbar {
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 1000;
-  backdrop-filter: blur(15px);
-  background: rgba(255, 255, 255, 0.04);
-  transition: all 0.5s ease;
+  backdrop-filter: blur(12px);
+  background: #ffffff;
+  transition: all 0.4s ease;
   display: flex;
   justify-content: center;
   padding: 0.7rem 2rem;
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* Container */
+/* ===========================
+   CONTAINER
+=========================== */
 .navbar-container {
   max-width: 1300px;
   width: 100%;
@@ -23,36 +27,36 @@
   height: 11vh;
 }
 
-/* Logo */
+/* ===========================
+   LOGO
+=========================== */
 .logo {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  transition: transform 0.4s ease, filter 0.4s ease;
+  transition: transform 0.3s ease;
 }
 
 .logo img {
   height: 55px;
-  width: auto;
-  transition: transform 0.4s ease;
 }
 
 .logo span {
   font-size: 1.7rem;
   font-weight: 800;
-  background: #7ec930;
+  background: #4caf50;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  transition: all 0.4s ease;
 }
 
 .logo:hover {
-  transform: scale(1.05) rotate(-1deg);
+  transform: scale(1.05);
 }
 
-/* Navigation Links */
+/* ===========================
+   NAV LINKS
+=========================== */
 .nav-links {
   display: flex;
   gap: 2.5rem;
@@ -69,15 +73,14 @@
   font-weight: 600;
   font-size: 1.05rem;
   color: #1b3a1a;
-  transition: all 0.3s ease;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
+/* Hover + Active */
 .nav-links li a:hover,
 .nav-links li a.active {
   color: #4caf50;
-  text-shadow: 0 2px 12px rgba(76, 175, 80, 0.6);
-  transform: translateY(-2px) scale(1.05);
+  transform: translateY(-1px);
 }
 
 /* Underline animation */
@@ -87,10 +90,9 @@
   bottom: -5px;
   left: 0;
   width: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #1b5e20, #4caf50);
-  border-radius: 2px;
-  transition: width 0.4s ease;
+  height: 2px;
+  background: #4caf50;
+  transition: width 0.3s ease;
 }
 
 .nav-links li a:hover::after,
@@ -98,47 +100,53 @@
   width: 100%;
 }
 
-/* Dropdown menu (theme colored) */
+/* Active menu soft highlight */
+.nav-links li a.active {
+  background: rgba(76, 175, 80, 0.12);
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+/* ===========================
+   DROPDOWN MENU
+=========================== */
 .nav-links li ul {
   position: absolute;
   top: 120%;
   left: 0;
-  background: rgba(28, 65, 28, 0.85);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 1rem 0;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 0.8rem 0;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.4s ease;
+  transition: all 0.3s ease;
   min-width: 180px;
   z-index: 1000;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
 }
 
 .nav-links li:hover ul {
   opacity: 1;
   visibility: visible;
-}
-
-.nav-links li ul li {
-  margin: 0;
+  transform: translateY(5px);
 }
 
 .nav-links li ul li a {
-  color: #e0f7e9;
+  color: #1b3a1a;
   font-weight: 500;
   padding: 0.6rem 1.5rem;
   display: block;
-  transition: all 0.3s ease;
+  transition: background 0.3s ease;
 }
 
 .nav-links li ul li a:hover {
-  background: rgba(76, 175, 80, 0.2);
-  color: #ffffff;
-  transform: translateX(5px);
-  border-left: 3px solid #4caf50;
+  background: rgba(76, 175, 80, 0.12);
+  color: #4caf50;
 }
 
-/* Mobile Menu Toggle */
+/* ===========================
+   MOBILE TOGGLE
+=========================== */
 .menu-toggle {
   display: none;
   flex-direction: column;
@@ -151,7 +159,7 @@
   height: 3px;
   background: #1b5e20;
   border-radius: 2px;
-  transition: all 0.4s ease;
+  transition: all 0.3s ease;
 }
 
 .menu-toggle.active span:nth-child(1) {
@@ -166,6 +174,9 @@
   transform: rotate(-45deg) translate(6px, -6px);
 }
 
+/* ===========================
+   MOBILE MENU (CLEAN + SMOOTH)
+=========================== */
 @media (max-width: 768px) {
   .menu-toggle {
     display: flex;
@@ -176,18 +187,32 @@
     top: 0;
     right: -100%;
     height: 100vh;
-    width: 250px;
+    width: 260px;
     flex-direction: column;
     justify-content: center;
-    background: rgba(28, 65, 28, 0.95);
-    backdrop-filter: blur(12px);
+
+    /* ✅ Your custom mobile color stays */
+    background: #e8f5e9;
+
     gap: 2rem;
-    transition: right 0.4s ease;
     padding: 2rem;
+    transition: right 0.35s ease;
+    box-shadow: -10px 0 25px rgba(0,0,0,0.15);
   }
 
   .nav-links.open {
     right: 0;
+  }
+
+  /* Mobile link highlight */
+  .nav-links li a {
+    padding: 10px 14px;
+    border-radius: 8px;
+  }
+
+  .nav-links li a:hover {
+    background: rgba(76, 175, 80, 0.2);
+    transform: translateX(6px);
   }
 
   .nav-links li ul {
@@ -197,6 +222,7 @@
     background: transparent;
     padding: 0;
     min-width: auto;
+    box-shadow: none;
   }
 
   .nav-links li ul li a {
@@ -204,7 +230,9 @@
   }
 }
 
-/* Spacer to avoid overlap */
+/* ===========================
+   SPACER
+=========================== */
 .navbar-spacer {
-  height: 70px; /* same as navbar height */
+  height: 70px;
 }

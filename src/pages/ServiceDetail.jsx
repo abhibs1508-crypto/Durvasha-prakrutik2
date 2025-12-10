@@ -19,9 +19,12 @@ export default function ServiceDetail() {
       .then((data) => setAllServices(data.data));
   }, [slug]);
 
-  if (!service) {
-    return <p className="not-found">Loading Service...</p>;
-  }
+  useEffect(() => {
+    const elements = document.querySelectorAll(".detail-card, .detail-title");
+    elements.forEach((el, index) => setTimeout(() => el.classList.add("in-view"), index * 150));
+  }, [service]);
+
+  if (!service) return <p>Loading Service...</p>;
 
   const index = allServices.findIndex((s) => s.slug === slug);
   const prev = index > 0 ? allServices[index - 1] : null;
@@ -29,40 +32,17 @@ export default function ServiceDetail() {
 
   return (
     <main className="detail-root">
-      <div className="detail-card animate-detail">
+      <div className="detail-card">
         <div className="detail-img-wrapper">
           <img src={service.image_url} alt={service.title} className="detail-img" />
           <h1 className="detail-title">{service.title}</h1>
         </div>
-
         <div className="detail-content">
-          <div
-            className="service-description"
-            dangerouslySetInnerHTML={{ __html: service.long_description }}
-          />
-
+          <div className="service-description" dangerouslySetInnerHTML={{ __html: service.long_description }} />
           <div className="detail-nav">
-            {prev && (
-              <button
-                className="nav-btn"
-                onClick={() => navigate(`/services/${prev.slug}`)}
-              >
-                ← {prev.title}
-              </button>
-            )}
-
-            <Link to="/services" className="back-btn">
-              Back to Services
-            </Link>
-
-            {next && (
-              <button
-                className="nav-btn"
-                onClick={() => navigate(`/services/${next.slug}`)}
-              >
-                {next.title} →
-              </button>
-            )}
+            {prev && <button className="nav-btn" onClick={() => navigate(`/services/${prev.slug}`)}>← {prev.title}</button>}
+            <Link to="/services" className="back-btn">Back to Services</Link>
+            {next && <button className="nav-btn" onClick={() => navigate(`/services/${next.slug}`)}>{next.title} →</button>}
           </div>
         </div>
       </div>
