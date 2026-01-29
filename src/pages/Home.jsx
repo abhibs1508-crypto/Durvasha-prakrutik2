@@ -1,22 +1,17 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 
+// --- ASSETS ---
 import heroVideo from "../assets/bg_video.mp4";
 import aboutImg from "../assets/about.jpg";
-
 import service1 from "../assets/service1.jpeg";
 import service2 from "../assets/service2.jpeg";
 import service3 from "../assets/service3.jpeg";
 import service4 from "../assets/gallery/infrastructure/i3.jpeg";
-import service5 from "../assets/gallery/varieties/v1.jpeg";
-import service6 from "../assets/gallery/varieties/v2.jpeg";
-
+import service6 from "../assets/gallery/varieties/v2.jpeg"; // Market
 import farmer1 from "../assets/farmer.jpg";
 import farmer2 from "../assets/farmer2.jpeg";
 import farmer3 from "../assets/farmer3.jpeg";
-import farmer4 from "../assets/gallery/farmers/f5.jpeg";
-import farmer5 from "../assets/gallery/farmers/f3.jpeg";
-
 import c1 from "../assets/gallery/cultivation/c1.jpeg";
 import c2 from "../assets/gallery/cultivation/c2.jpeg";
 import c3 from "../assets/gallery/cultivation/c3.jpeg";
@@ -24,420 +19,288 @@ import c4 from "../assets/gallery/cultivation/c4.jpeg";
 
 import "./Home.css";
 
-/* ============================
-   STATIC SERVICES (Glass style)
-   ============================ */
-const STATIC_SERVICES = [
-  { id: 1, name: "Soil Enrichment", image: service1, description: "Tailored composts & micronutrients to restore fertility." },
-  { id: 2, name: "Organic Inputs", image: service2, description: "Certified organic seeds, bio-fertilizers & natural inputs." },
-  { id: 3, name: "Training & Mentoring", image: service3, description: "Hands-on workshops, field mentoring & capacity building." },
-  { id: 4, name: "Irrigation Systems", image: service4, description: "Efficient irrigation & water-conservation solutions." },
-  { id: 5, name: "Seed Varieties", image: service5, description: "Climate-adapted, high-performing seed varieties." },
-  { id: 6, name: "Market Linkages", image: service6, description: "Aggregation, market access & premium buyers." },
+// --- DATA ---
+const SERVICES = [
+  { id: "01", title: "Soil Regeneration", desc: "Microbiome restoration & compost science.", img: service1 },
+  { id: "02", title: "Organic Inputs", desc: "Certified bio-fertilizers & inputs.", img: service2 },
+  { id: "03", title: "Smart Irrigation", desc: "Water conservation technology.", img: service4 },
+  { id: "04", title: "Market Linkage", desc: "Direct premium buyer connections.", img: service6 },
+  { id: "05", title: "Agronomy Advisory", desc: "Expert on-field mentorship.", img: service3 },
 ];
 
+// REPLACED PRODUCTS WITH BLOG/JOURNAL
+const BLOG_POSTS = [
+  { category: "Technique", date: "Jan 28, 2026", title: "The Secret to Increasing Wheat Yield by 30%", img: c1 },
+  { category: "Success Story", date: "Jan 15, 2026", title: "How Gujarat Farmers are Ditching Chemicals", img: c2 },
+  { category: "Innovation", date: "Jan 02, 2026", title: "Why Micro-Irrigation is the Future of Cotton", img: service4 },
+];
+
+const METHODOLOGY_STEPS = [
+  { num: "01", title: "The Scan", text: "We don't guess. We analyze soil biology at a microscopic level to understand the root cause of depletion.", img: c3 },
+  { num: "02", title: "The Cure", text: "Application of our proprietary bio-culture blends to restore the natural carbon cycle.", img: service2 },
+  { num: "03", title: "The Sow", text: "Selecting heirloom seeds that are genetically adapted to local climate resilience.", img: c4 },
+  { num: "04", title: "The Harvest", text: "Reaping nutrient-dense, chemical-free produce that commands premium market rates.", img: c1 },
+];
+
+const TESTIMONIALS_DATA = [
+  { img: farmer1, name: "Ramesh Patel", role: "Cotton Farmer", text: "My yield increased by 30% without chemicals. The soil texture has completely transformed.", location: "Gujarat" },
+  { img: farmer2, name: "Sita Sharma", role: "Vegetable Grower", text: "Durvasha changed how I view farming. It is no longer a struggle, but a science.", location: "Rajasthan" },
+  { img: farmer3, name: "Rajesh Kumar", role: "Wheat Farmer", text: "Their consultation saved my crop this season. Truly professional guidance.", location: "MP" },
+  { img: c2, name: "Anita Verma", role: "Organic Exporter", text: "I finally get the premium price I deserve because the produce quality is unmatched.", location: "Maharashtra" },
+];
+
+// --- COMPONENT: WATERMARK HEADING ---
+const SectionHeading = ({ eyebrow, title, watermark, dark }) => (
+  <div className={`section-header ${dark ? 'dark-mode' : ''} reveal-up`}>
+    <span className="header-eyebrow">{eyebrow}</span>
+    <h2 className="header-title">
+      {title}
+      <span className="header-watermark">{watermark}</span>
+    </h2>
+    <div className="header-line"></div>
+  </div>
+);
+
 export default function Home() {
-  // ---------- Intersection Observer Reveal ----------
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [activeService, setActiveService] = useState(0);
+
+  // --- SCROLL ANIMATION OBSERVER ---
   useEffect(() => {
-    const els = document.querySelectorAll(".reveal");
-    const obs = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) entry.target.classList.add("in-view");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("reveal-active");
+          }
         });
       },
-      { threshold: 0.12 }
+      { threshold: 0.1 }
     );
-    els.forEach(el => obs.observe(el));
-    return () => obs.disconnect();
+    document.querySelectorAll(".reveal-up").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
-  // ---------- Parallax ----------
+  // --- PARALLAX EFFECT ---
   useEffect(() => {
-    const handler = () => {
-      document.querySelectorAll(".parallax").forEach(el => {
-        const speed = Number(el.dataset.speed || 0.3);
-        const rect = el.getBoundingClientRect();
-        const y = (window.scrollY - rect.top + window.innerHeight / 2) * (speed / 100);
-        el.style.transform = `translateY(${y}px)`;
-      });
+    const handleScroll = () => {
+      document.body.style.setProperty("--scroll", window.scrollY);
     };
-    window.addEventListener("scroll", handler, { passive: true });
-    handler();
-    return () => window.removeEventListener("scroll", handler);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // ---------- Testimonials ----------
-  const testimonials = [
-    { img: farmer1, name: "Ramesh Patel", text: "Organic methods increased my yield by 30%!", location: "Gujarat, India" },
-    { img: farmer2, name: "Sita Sharma", text: "Sustainable practices improved my soil health.", location: "Rajasthan, India" },
-    { img: farmer3, name: "Rajesh Kumar", text: "Great consultation and natural fertilizers.", location: "Madhya Pradesh, India" },
-    { img: farmer4, name: "Anita Verma", text: "I now sell organic crops at premium prices.", location: "Maharashtra, India" },
-    { img: farmer5, name: "Vikram Singh", text: "Eco-friendly solutions helped me reduce costs.", location: "Gujarat, India" },
-  ];
-
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  const testimonialTrackRef = useRef(null);
-  const testimonialAutoRef = useRef(null);
-
-  const startTestimonialAuto = () => {
-    stopTestimonialAuto();
-    testimonialAutoRef.current = setInterval(() => {
-      setCurrentTestimonial(s => (s + 1) % testimonials.length);
-    }, 3600);
-  };
-
-  const stopTestimonialAuto = () => {
-    if (testimonialAutoRef.current) clearInterval(testimonialAutoRef.current);
-  };
-
-  useEffect(() => {
-    startTestimonialAuto();
-    return () => stopTestimonialAuto();
-  }, []);
-
-  // ---------- Left rotating images (testimonial left) ----------
-  const leftImgs = [farmer1, farmer2, farmer3, farmer4, farmer5];
-  const [leftImgIndex, setLeftImgIndex] = useState(0);
-  const leftAutoRef = useRef(null);
-
-  const startLeftAuto = () => {
-    stopLeftAuto();
-    leftAutoRef.current = setInterval(() => {
-      setLeftImgIndex(i => (i + 1) % leftImgs.length);
-    }, 3000);
-  };
-
-  const stopLeftAuto = () => {
-    if (leftAutoRef.current) clearInterval(leftAutoRef.current);
-  };
-
-  useEffect(() => {
-    startLeftAuto();
-    return () => stopLeftAuto();
-  }, []);
-
-  // ---------- Highlights slider (Swiper-like) ----------
-  const highlights = [c1, c2, c3, c4];
-  const [slideIndex, setSlideIndex] = useState(0);
-  const slidesCount = highlights.length;
-  const sliderRef = useRef(null);
-  const sliderAutoRef = useRef(null);
-  const pointerDataRef = useRef({ down: false, startX: 0, delta: 0 });
-  const transitionMs = 450;
-
-  const startSliderAuto = () => {
-    stopSliderAuto();
-    sliderAutoRef.current = setInterval(() => {
-      setSlideIndex(i => (i + 1) % slidesCount);
-    }, 3800);
-  };
-  const stopSliderAuto = () => {
-    if (sliderAutoRef.current) clearInterval(sliderAutoRef.current);
-  };
-
-  useEffect(() => {
-    startSliderAuto();
-    return () => stopSliderAuto();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const nextSlide = () => setSlideIndex(i => (i + 1) % slidesCount);
-  const prevSlide = () => setSlideIndex(i => (i - 1 + slidesCount) % slidesCount);
-
-  const onPointerDown = e => {
-    stopSliderAuto();
-    pointerDataRef.current.down = true;
-    pointerDataRef.current.startX = e.clientX ?? (e.touches && e.touches[0]?.clientX) ?? 0;
-    pointerDataRef.current.delta = 0;
-    const slidesEl = sliderRef.current?.querySelector(".slides");
-    if (slidesEl) slidesEl.style.transition = "none";
-  };
-
-  const onPointerMove = e => {
-    if (!pointerDataRef.current.down) return;
-    const clientX = e.clientX ?? (e.touches && e.touches[0]?.clientX) ?? 0;
-    pointerDataRef.current.delta = clientX - pointerDataRef.current.startX;
-    const slidesEl = sliderRef.current?.querySelector(".slides");
-    if (slidesEl) {
-      slidesEl.style.transform = `translateX(calc(-${slideIndex * 100}% + ${pointerDataRef.current.delta}px))`;
-    }
-    // prevent page scroll during drag
-    if (Math.abs(pointerDataRef.current.delta) > 6) {
-      e.preventDefault?.();
-    }
-  };
-
-  const onPointerUp = () => {
-    if (!pointerDataRef.current.down) return;
-    pointerDataRef.current.down = false;
-    const delta = pointerDataRef.current.delta;
-    const slidesEl = sliderRef.current?.querySelector(".slides");
-    if (slidesEl) slidesEl.style.transition = `${transitionMs}ms ease`;
-    if (Math.abs(delta) > 60) {
-      if (delta < 0) nextSlide();
-      else prevSlide();
-    } else {
-      // snap back (re-apply transform)
-      setSlideIndex(i => i);
-    }
-    pointerDataRef.current.delta = 0;
-    startSliderAuto();
-  };
-
-  // Sync transform when slideIndex changes
-  useEffect(() => {
-    const slidesEl = sliderRef.current?.querySelector(".slides");
-    if (!slidesEl) return;
-    slidesEl.style.transition = `${transitionMs}ms ease`;
-    slidesEl.style.transform = `translateX(-${slideIndex * 100}%)`;
-  }, [slideIndex]);
-
-  // Pointer event listeners
-  useEffect(() => {
-    const root = sliderRef.current;
-    if (!root) return;
-    const down = e => onPointerDown(e);
-    const move = e => onPointerMove(e);
-    const up = () => onPointerUp();
-    root.addEventListener("pointerdown", down);
-    window.addEventListener("pointermove", move, { passive: false });
-    window.addEventListener("pointerup", up);
-
-    // prevent image native dragging
-    const imgs = root.querySelectorAll("img");
-    imgs.forEach(img => (img.ondragstart = () => false));
-
-    return () => {
-      root.removeEventListener("pointerdown", down);
-      window.removeEventListener("pointermove", move);
-      window.removeEventListener("pointerup", up);
-      imgs.forEach(img => (img.ondragstart = null));
-    };
-  }, [slideIndex]);
-
-  // Hover tilt for .flow-item images (keeps previous effect)
-  useEffect(() => {
-    const imgs = document.querySelectorAll(".flow-item img");
-    imgs.forEach(img => {
-      const onMove = e => {
-        const rect = img.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const dx = (e.clientX - cx) / rect.width;
-        const dy = (e.clientY - cy) / rect.height;
-        img.style.transform = `perspective(800px) rotateX(${dy * -6}deg) rotateY(${dx * 5.5}deg) scale(1.06)`;
-      };
-      const onLeave = () => {
-        img.style.transform = "";
-        img.style.transition = "transform .35s ease";
-      };
-      img.addEventListener("mousemove", onMove);
-      img.addEventListener("mouseleave", onLeave);
-    });
-
-    return () =>
-      imgs.forEach(img => {
-        img.removeEventListener("mousemove", null);
-        img.removeEventListener("mouseleave", null);
-      });
-  }, []);
-
-  // Service card click (SPA-friendly fallback)
-  const onServiceClick = (e, href) => {
-    if (e.metaKey || e.ctrlKey) return; // allow open-in-new-tab
-    window.location.href = href;
-  };
 
   return (
-    <div className="home-root">
-      {/* HERO */}
-      <section className="hero reveal">
-        <video className="hero-video" src={heroVideo} autoPlay muted loop playsInline />
-        <div className="hero-overlay" />
-        <div className="hero-content parallax" data-speed="6">
-          <h1 className="hero-heading">Durvasha Prakrutik</h1>
-          <p className="hero-subheading">Nurturing Nature With Purity — sustainable farming solutions.</p>
-          <div className="hero-buttons">
-            <a className="btn primary" href="/about">Learn More</a>
-            <a className="btn ghost" href="/contact">Contact Us</a>
-          </div>
+    <div className="ultra-wrapper">
+      {/* TEXTURE */}
+      <div className="noise-texture"></div>
+
+      {/* --- 1. HERO: CINEMATIC --- */}
+      <section className="hero-portal">
+        <div className="portal-video">
+          <video src={heroVideo} autoPlay muted loop playsInline />
+          <div className="portal-overlay"></div>
         </div>
-      </section>
-
-      {/* ABOUT */}
-      <section className="about reveal" id="about">
-        <div className="about-container">
-          <div className="about-img-wrapper parallax" data-speed="3">
-            <img src={aboutImg} alt="About Durvasha" className="about-img" />
-            <div className="about-pill top">Certified Organic</div>
-            <div className="about-pill bottom">Farmer Support</div>
-          </div>
-
-          <div className="about-text">
-            <h2 className="animated-heading large">Who We Are</h2>
-            <p className="lead">
-              Durvasha Prakrutik blends traditional wisdom with modern ecological practices.
-              We help farmers transition to sustainable, regenerative agriculture using
-              soil-first methods, climate-adapted seeds, and community-based market linkages.
+        <div className="portal-content container">
+          <div className="hero-frame reveal-up">
+            <span className="hero-tag">EST. 2024 • REGENERATIVE ECOLOGY</span>
+            <h1 className="hero-headline">
+              Nature, <br />
+              <span className="gold-script">Perfected by Science.</span>
+            </h1>
+            <p className="hero-lead">
+              We bridge ancient Vedic wisdom with precision agronomy to heal the earth and empower the hands that feed us.
             </p>
-
-            <div className="about-grid">
-              <div className="about-grid-item"><h4>Our Mission</h4><p>Enable regenerative farming across smallholder landscapes.</p></div>
-              <div className="about-grid-item"><h4>Our Vision</h4><p>Restore soil health and deliver resilient yields for future generations.</p></div>
-              <div className="about-grid-item"><h4>Our Approach</h4><p>Scientific + traditional methods: soil testing, composting, crop diversity.</p></div>
-              <div className="about-grid-item"><h4>Core Values</h4><p>Transparency, co-creation with farmers, and continuous learning.</p></div>
-              <div className="about-grid-item"><h4>Programs</h4><p>On-field trials, seed trials, soil labs, and farmer exchanges.</p></div>
-              <div className="about-grid-item"><h4>Impact</h4><p>2,000+ acres transformed, improved incomes and biodiversity restored.</p></div>
-            </div>
-
-            <div className="about-cta">
-              <p>Want to bring regenerative practices to your farm? We offer free diagnostics, affordable inputs, and training programs tailored to your region.</p>
-              <a className="btn primary" href="/contact">Request Soil Test</a>
+            <div className="hero-btn-group">
+              <a href="/about" className="btn-luxe primary">Our Philosophy</a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SERVICES (Glass cards) */}
-      <section className="services reveal" id="services">
-        <h2 className="animated-heading large">Our Services</h2>
-        <p className="lead" style={{ maxWidth: 900, margin: "0.5rem auto 1.6rem" }}>
-          From soil enrichment to full value-chain support — our services are designed to boost productivity while regenerating the land.
-        </p>
-
-        <div className="services-grid glass-grid">
-          {STATIC_SERVICES.map((s, idx) => (
-            <div
-              key={s.id}
-              className="glass-card stagger"
-              style={{ animationDelay: `${idx * 90}ms` }}
-              role="button"
-              tabIndex={0}
-              onClick={e => onServiceClick(e, "/services")}
-              onKeyDown={e => (e.key === "Enter" ? onServiceClick(e, "/services") : null)}
-            >
-              <div className="glass-media">
-                <img src={s.image} alt={s.name} />
-              </div>
-              <div className="glass-body">
-                <h3>{s.name}</h3>
-                <p>{s.description}</p>
-                <div className="glass-actions">
-                  <a className="link" href="/services" onClick={e => e.stopPropagation()}>Learn more →</a>
-                </div>
-              </div>
+      {/* --- 2. ABOUT: SPLIT SCREEN --- */}
+      <section className="section about-manifesto">
+        <div className="container grid-split">
+          <div className="text-side reveal-up">
+            <SectionHeading 
+              eyebrow="Who We Are" 
+              title="Architects of the Soil" 
+              watermark="ORIGIN" 
+            />
+            <p className="big-desc">
+              Conventional farming strips the land. <span className="highlight">We rebuild it.</span> 
+              Durvasha Prakrutik exists to prove that sustainability and profitability are partners, not enemies.
+            </p>
+            <div className="stat-strip">
+              <div className="stat"><h3>2K+</h3><span>Acres Restored</span></div>
+              <div className="stat"><h3>100%</h3><span>Residue Free</span></div>
             </div>
-          ))}
+          </div>
+          <div className="img-side reveal-up">
+            <div className="img-mask"><img src={aboutImg} alt="About" /></div>
+          </div>
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
-      <section className="testimonial reveal">
-        <h2 className="animated-heading large">What Our Farmers Say</h2>
-
-        <div className="testimonial-sidewrap">
-          <div className="testimonial-left" onMouseEnter={stopLeftAuto} onMouseLeave={startLeftAuto}>
-            <div className="left-img-frame">
-              <img src={leftImgs[leftImgIndex]} alt={`Farmer ${leftImgIndex + 1}`} />
-            </div>
-            <div className="left-caption">Real farmers, real results</div>
+      {/* --- 3. SERVICES: ACCORDION --- */}
+      <section className="section services-premium bg-dark">
+        <div className="container">
+          <div className="section-header reveal-up">
+            <h4 className="header-eyebrow">OUR EXPERTISE</h4>
+            <h2 className="text-white" style={{fontFamily: 'var(--font-head)', fontSize:'3.5rem'}}>Holistic Solutions</h2>
           </div>
-
-          <div className="testimonial-right">
-            <div className="testimonial-wrap">
-              <button
-                className="prev-btn"
-                onClick={() => {
-                  stopTestimonialAuto();
-                  setCurrentTestimonial(c => (c - 1 + testimonials.length) % testimonials.length);
-                  startTestimonialAuto();
-                }}
-                aria-label="Previous testimonial"
-              >‹</button>
-
-              <div
-                className="testimonial-track"
-                ref={testimonialTrackRef}
-                style={{ transform: `translateX(-${currentTestimonial * 100}%)`, transition: "0.5s ease" }}
+          <div className="accordion-wrapper reveal-up">
+            {SERVICES.map((item, index) => (
+              <div 
+                key={item.id} 
+                className={`acc-item ${activeService === index ? "active" : ""}`}
+                onMouseEnter={() => setActiveService(index)}
               >
-                {testimonials.map((t, i) => (
-                  <div key={i} className={`testimonial-card ${i === currentTestimonial ? "active" : ""}`}>
-                    <img src={t.img} alt={t.name} />
-                    <div className="stars">⭐⭐⭐⭐⭐</div>
-                    <blockquote>{t.text}</blockquote>
-                    <p className="farmer-name">{t.name}</p>
-                    <p className="farmer-location">📍 {t.location}</p>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                className="next-btn"
-                onClick={() => {
-                  stopTestimonialAuto();
-                  setCurrentTestimonial(c => (c + 1) % testimonials.length);
-                  startTestimonialAuto();
-                }}
-                aria-label="Next testimonial"
-              >›</button>
-            </div>
-
-            <div className="dots">
-              {testimonials.map((_, i) => (
-                <button key={i} className={`dot ${i === currentTestimonial ? "active" : ""}`} onClick={() => setCurrentTestimonial(i)} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* HIGHLIGHTS / SLIDER */}
-      <section className="flow-gallery reveal">
-        <h2 className="animated-heading large">Our Farm Highlights</h2>
-        <p className="lead" style={{ maxWidth: 820, margin: "0.5rem auto 1.2rem" }}>
-          A rotating showcase of fields, seed trials and farmer success stories — swipe or use the arrows.
-        </p>
-
-        <div
-          className="highlights-slider upgraded"
-          ref={sliderRef}
-          onMouseEnter={stopSliderAuto}
-          onMouseLeave={startSliderAuto}
-        >
-          <button className="slider-arrow left" onClick={prevSlide} aria-label="Previous slide">‹</button>
-
-          <div className="slides-wrap">
-            <div className="slides">
-              {highlights.map((img, i) => (
-                <div className="slide flow-item" key={i}>
-                  <div className="slide-card">
-                    <img src={img} alt={`highlight-${i + 1}`} />
-                    <div className="slide-caption">
-                      <h4>{i === 0 ? "Healthy Soil" : i === 1 ? "Seed Trials" : i === 2 ? "Integrated Pest Management" : "Water Conservation"}</h4>
-                      <p>Results-driven methods tested with our farmer groups.</p>
-                    </div>
-                  </div>
+                <img src={item.img} alt={item.title} className="acc-bg" />
+                <div className="acc-overlay"></div>
+                <div className="acc-content">
+                  <span className="acc-num">{item.id}</span>
+                  <h3>{item.title}</h3>
+                  <p className="acc-desc">{item.desc}</p>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <button className="slider-arrow right" onClick={nextSlide} aria-label="Next slide">›</button>
-
-          <div className="slider-dots">
-            {highlights.map((_, i) => (
-              <button key={i} className={`slider-dot ${i === slideIndex ? "active" : ""}`} onClick={() => setSlideIndex(i)} />
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="cta reveal">
-        <h2 className="animated-heading large">Ready to Transform Your Farm?</h2>
-        <p>Get personalized plans, training, and certified organic inputs. Let's grow together.</p>
-        <a className="btn primary" href="/contact">Get Started</a>
+      {/* --- 4. NEW: STICKY SCROLL METHODOLOGY (Unique!) --- */}
+      <section className="section methodology-sticky bg-cream">
+        <div className="container">
+          <div className="sticky-layout">
+            <div className="sticky-left">
+              <SectionHeading 
+                eyebrow="The Method" 
+                title="From Seed to Soul" 
+                watermark="PROCESS"
+              />
+              <p className="sticky-desc">
+                A rigorous, four-step scientific process designed to restore fertility and maximize yield.
+              </p>
+              <a href="/services" className="btn-link">Learn Technical Details →</a>
+            </div>
+            
+            <div className="scroll-right">
+              {METHODOLOGY_STEPS.map((step, i) => (
+                <div className="method-card reveal-up" key={i}>
+                  <div className="m-img-box"><img src={step.img} alt={step.title} /></div>
+                  <div className="m-content">
+                    <span className="m-num">{step.num}</span>
+                    <h3>{step.title}</h3>
+                    <p>{step.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- 5. NEW: GALLERY (Infinite Film Reel) --- */}
+      <section className="section gallery-reel bg-dark">
+        <div className="container">
+           <SectionHeading 
+              eyebrow="The Journal" 
+              title="Nature in Motion" 
+              watermark="GALLERY"
+              dark={true}
+            />
+        </div>
+        <div className="film-track-container">
+          <div className="film-track">
+            {/* Doubled for seamless loop */}
+            {[c1, c2, c3, c4, farmer1, farmer2, service4, c1, c2, c3, c4, farmer1].map((img, i) => (
+              <div className="film-frame" key={i}>
+                <img src={img} alt="Gallery" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- 6. NEW: BLOG / INSIGHTS (Replaces Products) --- */}
+      <section className="section blog-editorial">
+        <div className="container">
+          <SectionHeading 
+            eyebrow="Knowledge Hub" 
+            title="The Cultivator's Journal" 
+            watermark="INSIGHTS" 
+          />
+          <div className="blog-grid">
+            {BLOG_POSTS.map((post, i) => (
+              <div className="blog-card reveal-up" key={i} style={{transitionDelay: `${i*100}ms`}}>
+                <div className="blog-img">
+                  <img src={post.img} alt={post.title} />
+                  <span className="blog-cat">{post.category}</span>
+                </div>
+                <div className="blog-meta">
+                  <span className="blog-date">{post.date}</span>
+                  <h3>{post.title}</h3>
+                  <a href="/blog" className="blog-read">Read Article ↗</a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- 7. TESTIMONIALS (PRESERVED AS REQUESTED) --- */}
+      <section className="section testimonial-section bg-dark">
+        <div className="container">
+          <SectionHeading 
+            eyebrow="Community Voices" 
+            title="Stories of Impact" 
+            watermark="TRUST"
+            dark={true}
+          />
+          
+          <div className="testimonial-display reveal-up">
+            <div className="testimonial-list">
+              {TESTIMONIALS_DATA.map((t, i) => (
+                <div 
+                  key={i} 
+                  className={`t-dot-item ${i === activeTestimonial ? 'active' : ''}`}
+                  onClick={() => setActiveTestimonial(i)}
+                >
+                  <img src={t.img} alt={t.name} />
+                  <div className="t-meta">
+                    <strong>{t.name}</strong>
+                    <span>{t.location}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="testimonial-quote-area">
+              <span className="quote-mark">“</span>
+              <p key={activeTestimonial} className="quote-text key-anim">
+                {TESTIMONIALS_DATA[activeTestimonial].text}
+              </p>
+              <div className="quote-author">
+                — {TESTIMONIALS_DATA[activeTestimonial].name}, <span className="gold-text">{TESTIMONIALS_DATA[activeTestimonial].role}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> 
+
+      {/* --- 8. NEW: CTA (Cinematic Text Mask) --- */}
+      <section className="section cta-mask">
+        <div className="cta-video-bg">
+          <video src={heroVideo} autoPlay muted loop playsInline />
+        </div>
+        <div className="cta-mask-content">
+          <h2 className="mask-text">JOIN THE<br/>REVOLUTION</h2>
+          <div className="cta-actions reveal-up">
+            <p>Transform your land today.</p>
+            <a href="/contact" className="btn-luxe primary">Get Started</a>
+          </div>
+        </div>
       </section>
 
       <Footer />
